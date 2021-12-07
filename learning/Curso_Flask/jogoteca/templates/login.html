@@ -20,19 +20,23 @@
         {% endwith %}
 
         <h1>Faça seu login</h1>
-        <form method="POST" action="/autenticar">
+        <form method="POST" action="{{ url_for('autenticar') }}">
             <input type="hidden" name="proxima" value="{{ proxima or url_for('index') }}">
             <p><label>Nome de usuário:</label> <input class="form-control" type="text" name="usuario" required></p>
             <p><label>Senha:</label> <input class="form-control" type="password" name="senha" required></p>
             <p><button class="btn btn-primary" type="submit">Entrar</button></p>
         </form>
     </div>
-      <a href="/">Go to Index</a>
-    <br>
-    <a href="/novo">Go to Novo</a>
-    <br>
-    <a href="/login">Go to Login</a>
-    <br>
-    <a href="/logout">Go to Logout</a>
+      {% block menu %}
+        <div>
+            <a href="{{ url_for('index') }}">Go to Index</a>
+            <br>
+            <a href="{{ url_for('novo') }}">Go to Novo</a>
+            <br>
+            <a href="{{ url_for('login') }}">Go to Login</a>
+            <br>
+            <a href="{{ url_for('logout') }}">Go to Logout</a>
+        </div>
+        {% endblock %}
 </body>
 </html>

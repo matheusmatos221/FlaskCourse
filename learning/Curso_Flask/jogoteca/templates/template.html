@@ -22,12 +22,16 @@
       </div>
         {% block conteudo %} {% endblock %}
       </div>
-    <a href="/">Go to Index</a>
-    <br>
-    <a href="/novo">Go to Novo</a>
-    <br>
-    <a href="/login">Go to Login</a>
-    <br>
-    <a href="/logout">Go to Logout</a>
+    {% block menu %}
+        <div>
+            <a href="{{ url_for('index') }}">Go to Index</a>
+            <br>
+            <a href="{{ url_for('novo') }}">Go to Novo</a>
+            <br>
+            <a href="{{ url_for('login') }}">Go to Login</a>
+            <br>
+            <a href="{{ url_for('logout') }}">Go to Logout</a>
+        </div>
+        {% endblock %}
   </body>
 </html>
