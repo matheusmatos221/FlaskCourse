@@ -100,9 +100,7 @@ def autenticar():
             return redirect(proxima_pagina)
     # Usuário Inválido
     flash('ID ou Senha inválido!')
-    if proxima_pagina:
-        return redirect(url_for('login', proxima=proxima_pagina))
-    return redirect(url_for('login'))
+    return redirect(url_for('login', proxima=proxima_pagina))
 
 
 @app.route('/logout')
