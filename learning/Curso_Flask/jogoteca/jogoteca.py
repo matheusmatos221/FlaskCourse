@@ -1,63 +1,25 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
+from dao import JogoDao, UsuarioDao
+from flask_mysqldb import MySQL
+from models import Jogo
+
 
 app = Flask(__name__)
 app.secret_key = 'matheus'
+app.config['MYSQL_HOST'] = "127.0.0.1"
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = "Mazzatheus1!"
+app.config['MYSQL_DB'] = "jogoteca"
+app.config['MYSQL_PORT'] = 3306
 
-
-class Jogo:
-    def __init__(self, nome, categoria, console):
-        self.__nome = nome
-        self.__categoria = categoria
-        self.__console = console
-
-    @property
-    def nome(self):
-        return self.__nome
-
-    @property
-    def categoria(self):
-        return self.__categoria
-
-    @property
-    def console(self):
-        return self.__console
-
-
-class Usuario:
-    def __init__(self, user_id, nome, senha):
-        self.__id = user_id
-        self.__nome = nome
-        self.__senha = senha
-
-    @property
-    def id(self):
-        return self.__id
-
-    @property
-    def nome(self):
-        return self.__nome
-
-    @property
-    def senha(self):
-        return self.__senha
-
-
-usuario1 = Usuario('mazzatheus', 'Matheus Matos', '12321')
-usuario2 = Usuario('azzam221', 'Azzam Zao', 'azzamzam')
-usuario3 = Usuario('math211', 'Mathias Camargo', 'mac1')
-
-usuarios = {usuario1.id: usuario1,
-            usuario2.id: usuario2,
-            usuario3.id: usuario3}
-
-jogo1 = Jogo('Super Mario', 'Ação', 'SNES')
-jogo2 = Jogo('Pokemon Gold', 'RPG', 'GBA')
-jogo3 = Jogo('GTA San Andreas', 'RPG', 'PS2')
-lista = [jogo1, jogo2, jogo3]
+db = MySQL(app)
+jogo_dao = JogoDao(db)
+usuario_dao = UsuarioDao(db)
 
 
 @app.route("/")
 def index():
+    lista = jogo_dao.listar()
     return render_template('lista.html', titulo='Jogos', jogos=lista)
 
 
@@ -77,7 +39,7 @@ def criar():
     categoria = request.form['categoria']
     console = request.form['console']
     jogo = Jogo(nome, categoria, console)
-    lista.append(jogo)
+    jogo_dao.salvar(jogo)
     return redirect(url_for('index'))
 
 
@@ -91,8 +53,8 @@ def login():
 def autenticar():
     """ Valida se o id e senha do usuário estão cadastrados"""
     proxima_pagina = request.form['proxima']  # Se houver valor, atribui à variável
-    if request.form['usuario'] in usuarios:
-        usuario = usuarios[request.form['usuario']]
+    usuario = usuario_dao.buscar_por_id(request.form['usuario'])
+    if usuario:
         if request.form['senha'] == usuario.senha:
             # Usuário Válido
             session['usuario_logado'] = usuario.id
