@@ -26,16 +26,17 @@
             <p><label>Senha:</label> <input class="form-control" type="password" name="senha" required></p>
             <p><button class="btn btn-primary" type="submit">Entrar</button></p>
         </form>
+        <a class="btn btn-danger" href="{{ url_for('index') }}">Voltar</a>
     </div>
       {% block menu %}
         <div>
-            <a href="{{ url_for('index') }}">Go to Index</a>
+            <a class="btn btn-primary" href="{{ url_for('index') }}">Go to Index</a>
             <br>
-            <a href="{{ url_for('novo') }}">Go to Novo</a>
+            <a class="btn btn-primary" href="{{ url_for('novo') }}">Go to Novo</a>
             <br>
-            <a href="{{ url_for('login') }}">Go to Login</a>
+            <a class="btn btn-primary" href="{{ url_for('login') }}">Go to Login</a>
             <br>
-            <a href="{{ url_for('logout') }}">Go to Logout</a>
+            <a class="btn btn-primary" href="{{ url_for('logout') }}">Go to Logout</a>
         </div>
         {% endblock %}
 </body>
